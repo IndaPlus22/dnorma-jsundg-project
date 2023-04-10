@@ -3,7 +3,6 @@ package game
 import (
 	"github.com/faiface/pixel"
 	"github.com/faiface/pixel/pixelgl"
-	"fmt"
 )
 
 type Player struct {
