@@ -33,3 +33,8 @@ func (p *Platform) Draw(win *pixelgl.Window){
 	imd.Polygon(0)
 	imd.Draw(win)
 }
+
+func (p *Platform) Update(dt float64, win *pixelgl.Window) {
+	//TODO: Make platforms move
+	//TODO: Make platforms disappear
+}
