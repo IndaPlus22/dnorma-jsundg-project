@@ -8,9 +8,9 @@ import (
 
 type GameState struct {
 	player		*Player
-	platforms	[]*Platform
+	platforms	[]*Platform //change to levels later
 	playing		bool
-	Input		*input.Input
+	Input		*input.InputState
 }
 //Currently just a test without level design or anything
 func NewGameState() *GameState {
@@ -31,7 +31,7 @@ func (g *GameState) DrawGameState(win *pixelgl.Window) {
 	}
 }
 
-func (g *GameState) UpdateGameState(input *input.Input, win *pixelgl.Window) {
+func (g *GameState) UpdateGameState(input *input.InputState, win *pixelgl.Window) {
 	g.player.Update(input, win)
 	// for _, p := range g.platforms {
 	// 			//For later when platforms are moving/disappearing
