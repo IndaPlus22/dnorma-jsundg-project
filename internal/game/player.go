@@ -28,7 +28,7 @@ func (p *Player) Draw(win *pixelgl.Window) {
 	p.sprite.Draw(win, pixel.IM.Moved(p.pos))
 }
 
-func (p *Player) Update(input *input.Input, win *pixelgl.Window){
+func (p *Player) Update(input *input.InputState, win *pixelgl.Window){
 	if input.Jump {
 		// p.Jump()
 	}
