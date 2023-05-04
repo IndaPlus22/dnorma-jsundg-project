@@ -11,6 +11,9 @@ type GameState struct {
 	player		*Player
 	platforms	[]*Platform //change to levels later
 	playing		bool
+	Input		*input.Input
+	walls		[]*Wall
+
 }
 //Currently just a test without level design or anything
 func NewGameState() *GameState {
@@ -27,14 +30,23 @@ func NewGameState() *GameState {
 			NewPlatform(pixel.V(100, 100), 100, 30),
 			NewPlatform(pixel.V(400, 200), 100, 10),
 		},
-		playing:	false,
-	}
+    
+		walls:		[]*Wall{
+			NewWall(pixel.V(0, 0), 10, 100, pixel.RGB(0, 0, 0)),
+			NewWall(pixel.V(100, 0), 10, 100, pixel.RGB(0, 0, 0)),
+			NewWall(pixel.V(200, 0), 10, 100, pixel.RGB(0, 0, 0)),
+		},
+		playing:	false,}
+
 }
 
 func (g *GameState) DrawGameState(win *pixelgl.Window) {
 	g.player.Draw(win)
 	for _, p := range g.platforms {
 		p.Draw(win)
+	}
+	for _, w := range g.walls {
+		w.Draw(win)
 	}
 }
 
