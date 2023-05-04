@@ -10,6 +10,7 @@ type ObjectType int64
 const (
 	PlatformType ObjectType = iota
 	WallType
+
 )
 
 type ObjectInfo struct {
@@ -21,13 +22,15 @@ type Level struct {
 	platforms 	[]*Platform
 	walls 		[]*Wall
 	grid 		*Grid
+	items 		[]*Item
 }
 
-func NewLevel(walls []*Wall, platforms []*Platform) *Level {
+func NewLevel(walls []*Wall, platforms []*Platform, items[]*Item) *Level {
 	level := &Level{
 		platforms: platforms,
 		walls: walls,
 		grid: NewGrid(100),
+		items: items,	
 	}
 	for _, p := range platforms {
 		level.grid.Add(p.GetRect())
@@ -35,7 +38,6 @@ func NewLevel(walls []*Wall, platforms []*Platform) *Level {
 	for _, w := range walls {
 		level.grid.Add(w.GetRect())
 	}
-
 	return level
 }
 
@@ -45,6 +47,9 @@ func (l *Level) Draw(win *pixelgl.Window) {
 	}
 	for _, w := range l.walls {
 		w.Draw(win)
+	}
+	for _, i := range l.items {
+		i.Draw(win)
 	}
 }
 
@@ -65,3 +70,12 @@ func (l *Level) GetNearby(rect pixel.Rect) []ObjectInfo {
 	}
 	return nearbyObjects
 }
+
+func (l *Level) RemoveItem(item *Item) {
+	for i, it := range l.items {
+		if it == item {
+			l.items = append(l.items[:i], l.items[i+1:]...)
+			break
+		}
+	}
+}	

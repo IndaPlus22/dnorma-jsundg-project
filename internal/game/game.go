@@ -22,7 +22,7 @@ func NewGameState(level *Level) *GameState {
 	// sprite := pixel.NewSprite(pic, pic.Bounds())
 
 	return &GameState{
-		player:		NewPlayer(nil, pixel.V(50, 100)),
+		player:		NewPlayer(nil, pixel.V(50, 50)),
 		level:		level,
 		playing:	false,}
 
@@ -34,35 +34,52 @@ func (g *GameState) DrawGameState(win *pixelgl.Window) {
 }
 
 func (g *GameState) UpdateGameState(input *input.InputState, win *pixelgl.Window) {
-	oldPos := g.player.pos
-	oldPlayerRect := g.player.GetRect()
-	g.player.Update(input, win)
+    oldPos := g.player.pos
+    g.player.Update(input, win)
 
-	playerRect := g.player.GetRect()
-	nearbyObjects := g.level.GetNearby(playerRect)
+    playerRect := g.player.GetRect()
+    nearbyObjects := g.level.GetNearby(playerRect)
 
-	for _, object := range nearbyObjects {
-		rect:= object.Rect
-		if object.Type == WallType || (object.Type == PlatformType && oldPlayerRect.Min.Y >= rect.Max.Y) {
-			if playerRect.Intersect(rect).Area() > 0 {
-			g.player.pos = oldPos
-			break
-			}
+    g.player.grounded = false
+
+    for _, object := range nearbyObjects {
+        rect := object.Rect
+        if object.Type == WallType || (object.Type == PlatformType && oldPos.Y+ 1.0 >= rect.Max.Y) {
+            intersection := playerRect.Intersect(rect)
+            if intersection.Area() > 0 {
+                // Determine the direction of the collision
+                xOverlap := intersection.W()
+                yOverlap := intersection.H()
+
+                // If the player is inside the object, push them out
+                if xOverlap < yOverlap { // Collision is horizontal
+                    if playerRect.Center().X > rect.Center().X{ // Player is to the right
+                        g.player.pos.X += xOverlap
+                    } else { // Player is to the left
+                        g.player.pos.X -= xOverlap
+                    }
+                } else { // Collision is vertical
+                    if playerRect.Center().Y > rect.Center().Y {
+                        g.player.pos.Y += yOverlap
+                        g.player.grounded = true
+                        g.player.vel.Y = 0
+                    } else {
+                        g.player.pos.Y -= yOverlap
+                    }
+                }
+            }
+        } 
+
+    }
+	for _, item := range g.level.items {
+		if item.IsActive() && playerRect.Intersect(item.GetRect()).Area() > 0 {
+			item.Collect(g.player)
+			item.Deactivate(g.level)
 		}
 	}
-	// for _, platform := range g.level.platforms {
-	// 	if g.player.CollidingWith(platform.GetRect()) && oldPos.Y >= platform.GetRect().Max.Y {
-	// 		g.player.pos = oldPos
-	// 		break
-	// 	}
-	// }
-	// for _, wall := range g.level.walls {
-	// 	if g.player.CollidingWith(wall.GetRect()) {
-	// 		g.player.pos = oldPos
-	// 		break
-	// 	}
-	// }
+	
 }
+
 
 func (g *GameState) StartGame() {
 	g.playing = true

@@ -36,12 +36,7 @@ func run() {
 		gameState.DrawGameState(win)
 		win.Update()
 
-		//TODO: Check if player is on platform
-		//TODO: Check collisions
 	}
-
-	//TODO: Add seperate input handler
-
 }
 func main() {
 	pixelgl.Run(run)
