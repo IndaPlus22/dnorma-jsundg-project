@@ -40,6 +40,6 @@ Pull requests will be named after their associated issue. It will be in the form
 ## Weekly milestones
 Week 1:     Character movement
 Week 2:     Walls and floors
-Week 3:     Collisions & items
+Week 3:     Collisions & items  
 Week 4:     Enemies & level design
 Week 5:     Movable camera
