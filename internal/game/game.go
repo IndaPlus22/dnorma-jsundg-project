@@ -34,7 +34,30 @@ func (g *GameState) DrawGameState(win *pixelgl.Window) {
 }
 
 func (g *GameState) UpdateGameState(input *input.InputState, win *pixelgl.Window) {
+	oldPos := g.player.pos
 	g.player.Update(input, win)
+
+	playerRect := g.player.GetRect()
+	nearbyRects := g.level.GetNearby(playerRect)
+
+	for _, rect := range nearbyRects {
+		if playerRect.Intersect(rect).Area() > 0 {
+			g.player.pos = oldPos
+			break
+		}
+	}
+	// for _, platform := range g.level.platforms {
+	// 	if g.player.CollidingWith(platform.GetRect()) && oldPos.Y >= platform.GetRect().Max.Y {
+	// 		g.player.pos = oldPos
+	// 		break
+	// 	}
+	// }
+	// for _, wall := range g.level.walls {
+	// 	if g.player.CollidingWith(wall.GetRect()) {
+	// 		g.player.pos = oldPos
+	// 		break
+	// 	}
+	// }
 }
 
 func (g *GameState) StartGame() {
