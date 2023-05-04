@@ -5,6 +5,18 @@ import (
 	"github.com/faiface/pixel"
 )
 
+type ObjectType int64
+
+const (
+	PlatformType ObjectType = iota
+	WallType
+)
+
+type ObjectInfo struct {
+	Rect 	pixel.Rect
+	Type 	ObjectType
+}
+
 type Level struct {
 	platforms 	[]*Platform
 	walls 		[]*Wall
@@ -36,6 +48,20 @@ func (l *Level) Draw(win *pixelgl.Window) {
 	}
 }
 
-func (l *Level) GetNearby(rect pixel.Rect) []pixel.Rect {
-	return l.grid.GetNearby(rect)
+func (l *Level) GetNearby(rect pixel.Rect) []ObjectInfo {
+	nearbyRects := l.grid.GetNearby(rect)
+	var nearbyObjects []ObjectInfo
+
+	for _, otherRect := range nearbyRects{
+		objectType := WallType
+
+		for _, p := range l.platforms {
+			if p.GetRect() == otherRect {
+				objectType = PlatformType
+				break
+			}
+		}
+		nearbyObjects = append(nearbyObjects, ObjectInfo{otherRect, objectType})
+	}
+	return nearbyObjects
 }

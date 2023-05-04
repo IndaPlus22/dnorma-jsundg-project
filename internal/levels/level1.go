@@ -7,9 +7,9 @@ import (
 //Load the first level
 func LoadLevel1() *game.Level {
 	walls := []*game.Wall{
-		game.NewWall(pixel.V(0, 0), 20, 500, pixel.RGB(0.5,0.5, 0.2)),
-		game.NewWall(pixel.V(0, 0),  500, 20, pixel.RGB(0.5, 1, 0.2)),
-		game.NewWall(pixel.V(0, 480), 500, 20, pixel.RGB(0.5,0.5, 0.2)),
+		game.NewWall(pixel.V(0, 50), 10, 50, pixel.RGB(0.5,0.5, 0.2)),
+		game.NewWall(pixel.V(60, 300),  10, 20, pixel.RGB(0.5, 1, 0.2)),
+		game.NewWall(pixel.V(700, 800), 500, 20, pixel.RGB(0.5,0.5, 0.2)),
 		game.NewWall(pixel.V(480, 0), 20, 500, pixel.RGB(0.5, 0, 0.2)),
 	}
 	platforms := []*game.Platform{

@@ -24,12 +24,6 @@ func NewPlayer(sprite *pixel.Sprite, pos pixel.Vec) *Player{
 	}
 }
 
-//Collision check
-func (p *Player) CollidingWith(rect pixel.Rect) bool {
-	playerRect := pixel.R(p.pos.X, p.pos.Y, p.pos.X + 50, p.pos.Y + 50)
-	return playerRect.Intersect(rect).Area() > 0
-}
-
 func (p *Player) Draw(win *pixelgl.Window) {
 	if p.sprite != nil {
 		p.sprite.Draw(win, pixel.IM.Moved(p.pos))
