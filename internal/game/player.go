@@ -54,3 +54,7 @@ func (p *Player) Update(input *input.InputState, win *pixelgl.Window){
 		p.pos.Y -= p.vel.Y * dt
 	}
 }
+
+func (p *Player) GetRect() pixel.Rect {
+	return pixel.R(p.pos.X, p.pos.Y, p.pos.X + 50, p.pos.Y + 50)
+}
