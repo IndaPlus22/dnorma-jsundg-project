@@ -18,17 +18,19 @@ func run() {
 		panic(err)
 	}
 
-	game := game.NewGameState()
+	gameState := game.NewGameState()
 	win.Clear(pixel.RGB(0, 0, 0))
 
 	//Draw platforms and player
-	game.DrawGameState(win)
+	gameState.DrawGameState(win)
 	in := input.InitInputState()
 
 	for !win.Closed() {
+		win.Clear(pixel.RGB(0, 0, 0))
+		in.Update(win)
+		gameState.UpdateGameState(in, win)
+		gameState.DrawGameState(win)
 		win.Update()
-		game.DrawGameState(win)
-		game.UpdateGameState(in, win)
 
 		//TODO: Check if player is on platform
 		//TODO: Check collisions
