@@ -1,8 +1,8 @@
 package game
 
 import (
-	"github.com/faiface/pixel/pixelgl"
 	"github.com/faiface/pixel"
+	"github.com/faiface/pixel/pixelgl"
 )
 
 type ObjectType int64
@@ -10,27 +10,26 @@ type ObjectType int64
 const (
 	PlatformType ObjectType = iota
 	WallType
-
 )
 
 type ObjectInfo struct {
-	Rect 	pixel.Rect
-	Type 	ObjectType
+	Rect pixel.Rect
+	Type ObjectType
 }
 
 type Level struct {
-	platforms 	[]*Platform
-	walls 		[]*Wall
-	grid 		*Grid
-	items 		[]*Item
+	platforms []*Platform
+	walls     []*Wall
+	grid      *Grid
+	items     []*Item
 }
 
-func NewLevel(walls []*Wall, platforms []*Platform, items[]*Item) *Level {
+func NewLevel(walls []*Wall, platforms []*Platform, items []*Item) *Level {
 	level := &Level{
 		platforms: platforms,
-		walls: walls,
-		grid: NewGrid(100),
-		items: items,	
+		walls:     walls,
+		grid:      NewGrid(100),
+		items:     items,
 	}
 	for _, p := range platforms {
 		level.grid.Add(p.GetRect())
@@ -57,7 +56,7 @@ func (l *Level) GetNearby(rect pixel.Rect) []ObjectInfo {
 	nearbyRects := l.grid.GetNearby(rect)
 	var nearbyObjects []ObjectInfo
 
-	for _, otherRect := range nearbyRects{
+	for _, otherRect := range nearbyRects {
 		objectType := WallType
 
 		for _, p := range l.platforms {
@@ -78,4 +77,4 @@ func (l *Level) RemoveItem(item *Item) {
 			break
 		}
 	}
-}	
+}

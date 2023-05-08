@@ -1,6 +1,7 @@
 package game
+
 /*Creates and draws platforms onto the window.
-*/
+ */
 
 import (
 	"github.com/faiface/pixel"
@@ -8,27 +9,27 @@ import (
 	"github.com/faiface/pixel/pixelgl"
 )
 
-//Platform is a struct that contains the position, color, sprite, width, and height of the platform.
+// Platform is a struct that contains the position, color, sprite, width, and height of the platform.
 type Platform struct {
-	pos 		pixel.Vec
-	color		pixel.RGBA
-	sprite 		*pixel.Sprite
-	width 		float64
-	height 		float64
+	pos    pixel.Vec
+	color  pixel.RGBA
+	sprite *pixel.Sprite
+	width  float64
+	height float64
 }
 
-//Creates a new platform.
+// Creates a new platform.
 func NewPlatform(pos pixel.Vec, width float64, height float64, color pixel.RGBA) *Platform {
 	return &Platform{
-		pos:	pos,
-		width:	width,
-		height:	height,
-		color:	color,
+		pos:    pos,
+		width:  width,
+		height: height,
+		color:  color,
 	}
 }
 
-//Draw the platform onto the window.
-func (p *Platform) Draw(win *pixelgl.Window){
+// Draw the platform onto the window.
+func (p *Platform) Draw(win *pixelgl.Window) {
 	imd := imdraw.New(nil)
 	imd.Color = p.color
 	imd.Push(p.pos, p.pos.Add(pixel.V(p.width, p.height)))
@@ -41,5 +42,5 @@ func (p *Platform) Draw(win *pixelgl.Window){
 }
 
 func (p *Platform) GetRect() pixel.Rect {
-	return pixel.R(p.pos.X, p.pos.Y, p.pos.X + p.width, p.pos.Y + p.height)
+	return pixel.R(p.pos.X, p.pos.Y, p.pos.X+p.width, p.pos.Y+p.height)
 }

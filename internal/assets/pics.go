@@ -1,10 +1,10 @@
 package assets
 
 import (
-	"image"
-	_"image/png"
-	"os"
 	"github.com/faiface/pixel"
+	"image"
+	_ "image/png"
+	"os"
 )
 
 func LoadPicture(path string) (pixel.Picture, error) {
@@ -14,7 +14,7 @@ func LoadPicture(path string) (pixel.Picture, error) {
 	}
 	defer file.Close()
 	img, _, err := image.Decode(file)
-	if err !=nil {
+	if err != nil {
 		return nil, err
 	}
 	return pixel.PictureDataFromImage(img), err

@@ -3,41 +3,41 @@ package game
 import (
 	"dnorma-jsundg-project/internal/input"
 	"github.com/faiface/pixel"
+	"github.com/faiface/pixel/imdraw"
 	"github.com/faiface/pixel/pixelgl"
 	"time"
-	"github.com/faiface/pixel/imdraw"
-	
-
 )
 
 type Player struct {
-	pos pixel.Vec
-	vel pixel.Vec
-	sprite	*pixel.Sprite
-	last	time.Time
-	grounded bool
+	pos       pixel.Vec
+	vel       pixel.Vec
+	sprite    *pixel.Sprite
+	last      time.Time
+	grounded  bool
 	jumpForce float64
-	velForce float64
+	velForce  float64
+	won       bool
 }
 
-func NewPlayer(sprite *pixel.Sprite, pos pixel.Vec) *Player{
+func NewPlayer(sprite *pixel.Sprite, pos pixel.Vec) *Player {
 	return &Player{
-		sprite: sprite,
-		pos:	pos,
-		vel:	pixel.V(300, 300),
-		grounded: true,
-		jumpForce: 200,
-		velForce: 1,
+		sprite:    sprite,
+		pos:       pos,
+		vel:       pixel.V(300, 300),
+		grounded:  true,
+		jumpForce: 1000,
+		velForce:  0,
+		won:       false,
 	}
 }
 
 func (p *Player) Draw(win *pixelgl.Window) {
 	if p.sprite != nil {
-		p.sprite.Draw(win, pixel.IM.Moved(p.pos))
+		p.sprite.Draw(win, pixel.IM.Moved(p.pos.Add(pixel.V(20, 20))))
 	} else {
 		imd := imdraw.New(nil)
 		imd.Color = pixel.RGB(0.8, 0.2, 0.2)
-		imd.Push(p.pos, p.pos.Add(pixel.V(50, 50)))
+		imd.Push(p.pos, p.pos.Add(pixel.V(40, 40)))
 		imd.Rectangle(0)
 		imd.Draw(win)
 	}
@@ -49,9 +49,9 @@ func (p *Player) Update(input *input.InputState, win *pixelgl.Window) {
 	p.last = time.Now()
 
 	if input.Left {
-		p.vel.X = -200 * p.velForce
+		p.vel.X = -400 - p.velForce
 	} else if input.Right {
-		p.vel.X = 200 * p.velForce
+		p.vel.X = 400 + p.velForce
 	} else {
 		p.vel.X = 0
 	}
@@ -60,9 +60,8 @@ func (p *Player) Update(input *input.InputState, win *pixelgl.Window) {
 		p.Jump()
 	}
 
-	
 	if !p.grounded {
-		p.vel.Y -= 300 * dt 
+		p.vel.Y -= 2000 * dt
 	} else {
 		p.vel.Y = 0
 	}
@@ -72,13 +71,15 @@ func (p *Player) Update(input *input.InputState, win *pixelgl.Window) {
 
 	// fmt.Printf("Player position: %v\n", p.pos)
 
+	//Not needed
+
 	// if input.Down {
-	// 	p.pos.Y -= p.vel.Y * dt
+	// 	p.vel.Y -= p.vel.Y * dt
 	// }
 }
 
 func (p *Player) GetRect() pixel.Rect {
-	return pixel.R(p.pos.X, p.pos.Y, p.pos.X + 50, p.pos.Y + 50)
+	return pixel.R(p.pos.X, p.pos.Y, p.pos.X+40, p.pos.Y+30)
 }
 
 func (p *Player) Jump() {
@@ -88,10 +89,15 @@ func (p *Player) Jump() {
 	}
 }
 
-func (p *Player) SpeedBoost(speed float64){
+func (p *Player) SpeedBoost(speed float64) {
 	p.velForce += speed
 }
 
-func (p *Player) JumpBoost(jump float64){
+func (p *Player) JumpBoost(jump float64) {
 	p.jumpForce += jump
+}
+
+func (p *Player) ResetEffects() {
+	p.velForce = 0
+	p.jumpForce = 1000
 }

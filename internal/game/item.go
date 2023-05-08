@@ -2,7 +2,6 @@ package game
 
 import (
 	"fmt"
-
 	"github.com/faiface/pixel"
 	"github.com/faiface/pixel/imdraw"
 	"github.com/faiface/pixel/pixelgl"
@@ -10,31 +9,32 @@ import (
 
 type ItemType int
 
-const	(
-	SpeedBoost 	ItemType = iota
-	JumpBoost	
+const (
+	SpeedBoost ItemType = iota
+	JumpBoost
 	WinGame
+	ResetEffect
 )
 
 type Item struct {
-	pos    pixel.Vec
-	size   float64
-	color  pixel.RGBA
-	active bool
+	pos      pixel.Vec
+	size     float64
+	color    pixel.RGBA
+	active   bool
 	itemType ItemType
 }
 
 func NewItem(pos pixel.Vec, size float64, color pixel.RGBA, itemType ItemType) *Item {
 	return &Item{
-		pos:    pos,
-		size:   size,
-		color:  color,
-		active: true,
+		pos:      pos,
+		size:     size,
+		color:    color,
+		active:   true,
 		itemType: itemType,
 	}
 }
 
-func (i *Item) Draw(win *pixelgl.Window){
+func (i *Item) Draw(win *pixelgl.Window) {
 	if !i.active {
 		return
 	}
@@ -61,18 +61,22 @@ func (i *Item) Deactivate(level *Level) {
 	level.RemoveItem(i)
 }
 
-func (i *Item) Collect(player *Player) {
+func (i *Item) Collect(player *Player, gameState *GameState) {
 	if !i.active {
 		return
 	}
 
 	switch i.itemType {
 	case SpeedBoost:
-		player.SpeedBoost(2)
-		fmt.Print("Speed Boost")
+		player.SpeedBoost(400)
+		fmt.Print("\nSpeed Boost")
 	case JumpBoost:
-		player.JumpBoost(100)
+		player.JumpBoost(700)
+		fmt.Print("\nJump Boost")
 	case WinGame:
-		//TODO
+		gameState.WinGame()
+	case ResetEffect:
+		player.ResetEffects()
+		fmt.Print("\nReset Effect")
 	}
 }
