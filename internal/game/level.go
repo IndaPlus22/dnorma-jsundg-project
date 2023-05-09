@@ -28,7 +28,7 @@ func NewLevel(walls []*Wall, platforms []*Platform, items []*Item) *Level {
 	level := &Level{
 		platforms: platforms,
 		walls:     walls,
-		grid:      NewGrid(100),
+		grid:      NewGrid(250),
 		items:     items,
 	}
 	for _, p := range platforms {
@@ -70,11 +70,11 @@ func (l *Level) GetNearby(rect pixel.Rect) []ObjectInfo {
 	return nearbyObjects
 }
 
-func (l *Level) RemoveItem(item *Item) {
-	for i, it := range l.items {
-		if it == item {
-			l.items = append(l.items[:i], l.items[i+1:]...)
-			break
+func (l *Level) AllItemsCollected() bool {
+	for _, item := range l.items {
+		if item.IsActive() {
+			return false
 		}
 	}
+	return true
 }

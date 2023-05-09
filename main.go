@@ -4,9 +4,22 @@ import (
 	"dnorma-jsundg-project/internal/game"
 	"dnorma-jsundg-project/internal/input"
 	"dnorma-jsundg-project/internal/levels"
+	"fmt"
+	"time"
 	"github.com/faiface/pixel"
 	"github.com/faiface/pixel/pixelgl"
+	"github.com/faiface/pixel/text"
+	"golang.org/x/image/font/basicfont"
 )
+
+func DrawWinScreen(win *pixelgl.Window) {
+	basicAtlas := text.NewAtlas(basicfont.Face7x13, text.ASCII)
+	winText := text.New(pixel.V(win.Bounds().Center().X-50, win.Bounds().Center().Y), basicAtlas)
+	winText.Color = pixel.RGB(0, 0, 0)
+
+	_, _ = fmt.Fprint(winText, "You Win!")
+	winText.Draw(win, pixel.IM.Scaled(winText.Orig, 4))
+}
 
 func run() {
 	//Create window configurations
@@ -25,10 +38,10 @@ func run() {
 	level1 := levels.LoadLevel1()
 	level2 := levels.LoadLevel2()
 	level3 := levels.LoadLevel3()
-	levels := []*game.Level{level1, level2, level3}
-
-	gameState := game.NewGameState(level1, 1)
-	currentLevel := 0
+	level4 := levels.LoadLevel4()
+	level5 := levels.LoadLevel5()
+	levels := []*game.Level{level1, level2, level3, level4, level5}
+	gameState := game.NewGameState(levels, level1, 0)
 
 	//Create input state
 	in := input.InitInputState()
@@ -37,26 +50,20 @@ func run() {
 	for !win.Closed() {
 		win.Clear(pixel.RGB(1, 0.75, 0.8))
 		in.Update(win)
-		gameState.UpdateGameState(in, win)
+		gameState.UpdateGameState(in, win, levels)
+		if gameState.HasWon() && gameState.GetLevel() == len(levels) {
+			DrawWinScreen(win)
+			win.Update()
+			time.Sleep(5 * time.Second)
+			break
 
-		if gameState.HasWon() {
-			currentLevel++
-
-			if currentLevel < len(levels) {
-				gameState.LoadNextLevel(levels[currentLevel])
-				gameState.ResetWin()
-				gameState.ResetPlayer()
-			} else {
-				//TODO: Win screen/Menu
-				break
-			}
+		} else{
+			gameState.DrawGameState(win)
 		}
-
-		gameState.DrawGameState(win)
 		win.Update()
-
 	}
 }
+
 func main() {
 	pixelgl.Run(run)
 }

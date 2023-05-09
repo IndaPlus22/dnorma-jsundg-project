@@ -58,7 +58,6 @@ func (i *Item) Deactivate(level *Level) {
 		return
 	}
 	i.active = false
-	level.RemoveItem(i)
 }
 
 func (i *Item) Collect(player *Player, gameState *GameState) {
@@ -79,4 +78,8 @@ func (i *Item) Collect(player *Player, gameState *GameState) {
 		player.ResetEffects()
 		fmt.Print("\nReset Effect")
 	}
+}
+
+func (i *Item) Reset() {
+	i.active = true
 }
