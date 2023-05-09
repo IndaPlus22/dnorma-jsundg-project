@@ -125,3 +125,9 @@ func (g *GameState) ResetPlayer() {
 	}
 	g.player.grounded = true
 }
+
+func (g *GameState) ResetLevel() {
+
+	g.ResetPlayer()
+	g.player.ResetEffects()
+}
