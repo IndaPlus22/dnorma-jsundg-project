@@ -1,32 +1,19 @@
 package main
 
 import (
+	"github.com/faiface/pixel"
+	"github.com/faiface/pixel/pixelgl"
 	"dnorma-jsundg-project/internal/game"
 	"dnorma-jsundg-project/internal/input"
 	"dnorma-jsundg-project/internal/levels"
-	"fmt"
-	"time"
-	"github.com/faiface/pixel"
-	"github.com/faiface/pixel/pixelgl"
-	"github.com/faiface/pixel/text"
-	"golang.org/x/image/font/basicfont"
 )
-
-func DrawWinScreen(win *pixelgl.Window) {
-	basicAtlas := text.NewAtlas(basicfont.Face7x13, text.ASCII)
-	winText := text.New(pixel.V(win.Bounds().Center().X-50, win.Bounds().Center().Y), basicAtlas)
-	winText.Color = pixel.RGB(0, 0, 0)
-
-	_, _ = fmt.Fprint(winText, "You Win!")
-	winText.Draw(win, pixel.IM.Scaled(winText.Orig, 4))
-}
 
 func run() {
 	//Create window configurations
 	cfg := pixelgl.WindowConfig{
 		Title:  "Platformer",
 		Bounds: pixel.R(0, 0, 1600, 800),
-		VSync:  true,
+		VSync: true,
 	}
 	//Create window with the configurations
 	win, err := pixelgl.NewWindow(cfg)
@@ -34,36 +21,28 @@ func run() {
 		panic(err)
 	}
 
-	//Load levels and create game state
-	level1 := levels.LoadLevel1()
-	level2 := levels.LoadLevel2()
-	level3 := levels.LoadLevel3()
-	level4 := levels.LoadLevel4()
-	level5 := levels.LoadLevel5()
-	levels := []*game.Level{level1, level2, level3, level4, level5}
-	gameState := game.NewGameState(levels, level1, 0)
+	//Load level and create game state
+	level := levels.LoadLevel1()
+	gameState := game.NewGameState(level)
 
 	//Create input state
 	in := input.InitInputState()
 
 	//Game loop
 	for !win.Closed() {
-		win.Clear(pixel.RGB(1, 0.75, 0.8))
+		win.Clear(pixel.RGB(173, 255, 230))
 		in.Update(win)
-		gameState.UpdateGameState(in, win, levels)
-		if gameState.HasWon() && gameState.GetLevel() == len(levels) {
-			DrawWinScreen(win)
-			win.Update()
-			time.Sleep(5 * time.Second)
-			break
-
-		} else{
-			gameState.DrawGameState(win)
-		}
+		gameState.UpdateGameState(in, win)
+		gameState.DrawGameState(win)
 		win.Update()
-	}
-}
 
+		//TODO: Check if player is on platform
+		//TODO: Check collisions
+	}
+
+	//TODO: Add seperate input handler
+
+}
 func main() {
 	pixelgl.Run(run)
 }

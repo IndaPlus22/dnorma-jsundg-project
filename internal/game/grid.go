@@ -7,13 +7,13 @@ import (
 
 type Grid struct {
 	cellSize float64
-	cells    map[[2]int][]pixel.Rect
+	cells map[[2]int][]pixel.Rect
 }
 
 func NewGrid(cellSize float64) *Grid {
 	return &Grid{
 		cellSize: cellSize,
-		cells:    make(map[[2]int][]pixel.Rect),
+		cells: make(map[[2]int][]pixel.Rect),
 	}
 }
 
@@ -25,8 +25,8 @@ func (g *Grid) Add(rect pixel.Rect) {
 }
 
 func (g *Grid) getCellCoords(rect pixel.Rect) [][2]int {
-	minX, minY := int(math.Floor(rect.Min.X/g.cellSize)), int(math.Floor(rect.Min.Y/g.cellSize))
-	maxX, maxY := int(math.Floor(rect.Max.X/g.cellSize)), int(math.Floor(rect.Max.Y/g.cellSize))
+	minX, minY := int(math.Floor(rect.Min.X / g.cellSize)), int(math.Floor(rect.Min.Y / g.cellSize))
+	maxX, maxY := int(math.Floor(rect.Max.X / g.cellSize)), int(math.Floor(rect.Max.Y / g.cellSize))
 
 	var coords [][2]int
 	for x := minX; x <= maxX; x++ {

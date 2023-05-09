@@ -2,11 +2,11 @@ package input
 
 import "github.com/faiface/pixel/pixelgl"
 
-type InputState struct {
-	Left  bool
-	Right bool
-	Up    bool
-	Down  bool
+type InputState struct{
+	Left		bool
+	Right		bool
+	Up			bool
+	Down		bool
 }
 
 func InitInputState() *InputState {

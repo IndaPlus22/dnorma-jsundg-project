@@ -1,27 +1,22 @@
 package levels
 
 import (
-	"dnorma-jsundg-project/internal/game"
 	"github.com/faiface/pixel"
+	"dnorma-jsundg-project/internal/game"
 )
-
-// Load the first level
+//Load the first level
 func LoadLevel1() *game.Level {
 	walls := []*game.Wall{
-		game.NewWall(pixel.V(0, 0), 10, 800, pixel.RGB(0.9, 0.2, 0.4)),
-		game.NewWall(pixel.V(1590, 0), 10, 800, pixel.RGB(0.9, 0.2, 0.4)),
-		game.NewWall(pixel.V(0, 790), 1600, 10, pixel.RGB(0.9, 0.2, 0.4)),
+		game.NewWall(pixel.V(0, 50), 10, 50, pixel.RGB(0.5,0.5, 0.2)),
+		game.NewWall(pixel.V(60, 300),  10, 20, pixel.RGB(0.5, 1, 0.2)),
+		game.NewWall(pixel.V(700, 800), 500, 20, pixel.RGB(0.5,0.5, 0.2)),
+		game.NewWall(pixel.V(480, 0), 20, 500, pixel.RGB(0.5, 0, 0.2)),
 	}
 	platforms := []*game.Platform{
-		game.NewPlatform(pixel.V(0, 0), 700, 10, pixel.RGB(0.9, 0.2, 0.4)),
-		game.NewPlatform(pixel.V(900, 0), 700, 10, pixel.RGB(0.9, 0.2, 0.4)),
-		game.NewPlatform(pixel.V(110, 200), 140, 10, pixel.RGB(0.9, 0.2, 0.4)),
-		game.NewPlatform(pixel.V(750, 400), 100, 10, pixel.RGB(0.9, 0.2, 0.4)),
-		game.NewPlatform(pixel.V(1400, 600), 400, 10, pixel.RGB(0.9, 0.2, 0.4)),
+		game.NewPlatform(pixel.V(30, 50), 400, 10, pixel.RGB(0.5, 0.5, 0.2)),
+		game.NewPlatform(pixel.V(100, 90), 20, 30, pixel.RGB(0, 0.5, 0)),
+		game.NewPlatform(pixel.V(200, 200), 20, 30, pixel.RGB(0.5, 0.5, 1)),
+		game.NewPlatform(pixel.V(300, 300), 20, 30, pixel.RGB(0.5, 0.3, 0.2)),
 	}
-	items := []*game.Item{
-		game.NewItem(pixel.V(100, 100), 30, pixel.RGB(255, 255, 0), game.SpeedBoost),
-		game.NewItem(pixel.V(1500, 750), 30, pixel.RGB(0, 255, 0), game.WinGame),
-	}
-	return game.NewLevel(walls, platforms, items)
+	return game.NewLevel(walls, platforms)
 }
