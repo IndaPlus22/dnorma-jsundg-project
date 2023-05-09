@@ -1,4 +1,5 @@
 package game
+// GameState is the state of the game. It contains the player, the level, and the current level number.
 
 import (
 	"dnorma-jsundg-project/internal/assets"
@@ -15,7 +16,7 @@ type GameState struct {
 	currentLevel 	int
 	levels	   		[]*Level
 }
-
+// NewGameState creates a new game state with the given levels, level, and level number.
 func NewGameState(levels []*Level, level *Level, levelnum int) *GameState {
 	pic, err := assets.LoadPicture("internal/assets/datalog_griffin.png")
 	if err != nil {
@@ -32,12 +33,12 @@ func NewGameState(levels []*Level, level *Level, levelnum int) *GameState {
 	}
 
 }
-
+//DrawGameState draws the game state to the window.
 func (g *GameState) DrawGameState(win *pixelgl.Window) {
 	g.player.Draw(win)
 	g.level.Draw(win)
 }
-
+//UpdateGameState updates the game state based on the input and window. Also checks for win conditions.
 func (g *GameState) UpdateGameState(input *input.InputState, win *pixelgl.Window, levels []*Level) {
 	oldPos := g.player.pos
 	g.player.Update(input, win)
@@ -47,6 +48,7 @@ func (g *GameState) UpdateGameState(input *input.InputState, win *pixelgl.Window
 
 	g.player.grounded = false
 
+	// Check for platform/wall collisions
 	for _, object := range nearbyObjects {
 		rect := object.Rect
 		if object.Type == WallType || (object.Type == PlatformType && oldPos.Y+1.0 >= rect.Max.Y) {
@@ -77,6 +79,7 @@ func (g *GameState) UpdateGameState(input *input.InputState, win *pixelgl.Window
 		}
 
 	}
+	// Check for item collisions
 	for _, item := range g.level.items {
 		if item.IsActive() && playerRect.Intersect(item.GetRect()).Area() > 0 {
 			item.Collect(g.player, g)
@@ -91,9 +94,11 @@ func (g *GameState) UpdateGameState(input *input.InputState, win *pixelgl.Window
 			}
 		}
 	}
+	//If the player falls off the map, reset the level
 	if g.player.pos.Y < -100 {
 		g.ResetLevel(g.level)
 	}
+	//If the player collects all the items, win the game
 	if g.level.AllItemsCollected() {
 		g.WinGame()
 		if g.GetLevel() < len(levels) - 1{
@@ -103,36 +108,36 @@ func (g *GameState) UpdateGameState(input *input.InputState, win *pixelgl.Window
 		}
 	}
 }
-
+//HasWon returns true if the player has won the game (or finished a level)
 func (g *GameState) HasWon() bool {
 	return g.player.won
 }
-
+//StartGame starts the game
 func (g *GameState) StartGame() {
 	g.playing = true
 }
-
+//StopGame stops the game
 func (g *GameState) StopGame() {
 	g.playing = false
 }
-
+//IsPlaying returns true if the game is ongoing
 func (g *GameState) IsPlaying() bool {
 	return g.playing
 }
-
+//WinGame sets the player's won variable to true
 func (g *GameState) WinGame() {
 	fmt.Println("\nNice!")
 	g.player.won = true
 }
-
+//ResetWin sets the player's won variable to false
 func (g *GameState) ResetWin() {
 	g.player.won = false
 }
-
+//LoadLevel loads the given level
 func (g *GameState) LoadNextLevel(level *Level) {
 	g.level = level
 }
-
+//ResetPlayer resets the player to the starting position (depends on which level the player is on)
 func (g *GameState) ResetPlayer() {
 	g.player.ResetEffects()
 	switch g.currentLevel {
@@ -149,7 +154,7 @@ func (g *GameState) ResetPlayer() {
 	}
 	g.player.grounded = true
 }
-
+//ResetLevel resets the level to the given level
 func (g *GameState) ResetLevel(level *Level) {
 	g.level = level
 	g.ResetPlayer()
@@ -158,11 +163,11 @@ func (g *GameState) ResetLevel(level *Level) {
 		item.Reset()
 	}
 }
-
+//NextLevel increments the current level
 func (g *GameState) NextLevel() {
     g.currentLevel++
 }
-
+//GetLevel returns the current level
 func (g *GameState) GetLevel() int {
 	return g.currentLevel
 }

@@ -35,12 +35,14 @@ func (p *Platform) Draw(win *pixelgl.Window) {
 	imd.Push(p.pos, p.pos.Add(pixel.V(p.width, p.height)))
 	imd.Rectangle(0)
 	imd.Draw(win)
+
+	//Won't be used for optimization purposes.
 	// if p.sprite != nil {
 	// 	p.sprite.Draw(win, pixel.IM.Moved(p.rect.Min))
 	// 	return
 	// }
 }
-
+// GetRect returns the rectangle of the platform.
 func (p *Platform) GetRect() pixel.Rect {
 	return pixel.R(p.pos.X, p.pos.Y, p.pos.X+p.width, p.pos.Y+p.height)
 }
