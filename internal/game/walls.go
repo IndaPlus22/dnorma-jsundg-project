@@ -1,4 +1,5 @@
 package game
+// Walls are the walls in the game. They can't be passed through from any angle.
 
 import (
 	"github.com/faiface/pixel"

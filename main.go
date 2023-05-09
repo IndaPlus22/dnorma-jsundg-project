@@ -1,5 +1,6 @@
 package main
 
+//Entry point of the program
 import (
 	"dnorma-jsundg-project/internal/game"
 	"dnorma-jsundg-project/internal/input"
@@ -11,7 +12,7 @@ import (
 	"github.com/faiface/pixel/text"
 	"golang.org/x/image/font/basicfont"
 )
-
+//Draws the win screen
 func DrawWinScreen(win *pixelgl.Window) {
 	basicAtlas := text.NewAtlas(basicfont.Face7x13, text.ASCII)
 	winText := text.New(pixel.V(win.Bounds().Center().X-50, win.Bounds().Center().Y), basicAtlas)
@@ -51,13 +52,13 @@ func run() {
 		win.Clear(pixel.RGB(1, 0.75, 0.8))
 		in.Update(win)
 		gameState.UpdateGameState(in, win, levels)
-		if gameState.HasWon() && gameState.GetLevel() == len(levels) {
+		if gameState.HasWon() && gameState.GetLevel() == len(levels) { //If the player has won and is on the last level
 			DrawWinScreen(win)
 			win.Update()
 			time.Sleep(5 * time.Second)
 			break
 
-		} else{
+		} else{ //If the player has not won or is not on the last level
 			gameState.DrawGameState(win)
 		}
 		win.Update()
