@@ -1,4 +1,5 @@
 package game
+//Level is the level of the game. It contains all the platforms, walls, and items.
 
 import (
 	"github.com/faiface/pixel/pixelgl"
@@ -22,8 +23,8 @@ type Level struct {
 	walls 		[]*Wall
 	grid 		*Grid
 }
-
-func NewLevel(walls []*Wall, platforms []*Platform) *Level {
+//NewLevel creates a new level with the given walls, platforms, and items.
+func NewLevel(walls []*Wall, platforms []*Platform, items []*Item) *Level {
 	level := &Level{
 		platforms: platforms,
 		walls: walls,
@@ -38,7 +39,7 @@ func NewLevel(walls []*Wall, platforms []*Platform) *Level {
 
 	return level
 }
-
+//Draw draws the level to the window.
 func (l *Level) Draw(win *pixelgl.Window) {
 	for _, p := range l.platforms {
 		p.Draw(win)
@@ -47,7 +48,7 @@ func (l *Level) Draw(win *pixelgl.Window) {
 		w.Draw(win)
 	}
 }
-
+//GetNearby returns the nearby objects of the given rectangle.
 func (l *Level) GetNearby(rect pixel.Rect) []ObjectInfo {
 	nearbyRects := l.grid.GetNearby(rect)
 	var nearbyObjects []ObjectInfo
@@ -64,4 +65,13 @@ func (l *Level) GetNearby(rect pixel.Rect) []ObjectInfo {
 		nearbyObjects = append(nearbyObjects, ObjectInfo{otherRect, objectType})
 	}
 	return nearbyObjects
+}
+//AllItemsCollected returns true if all the items in the level have been collected.
+func (l *Level) AllItemsCollected() bool {
+	for _, item := range l.items {
+		if item.IsActive() {
+			return false
+		}
+	}
+	return true
 }

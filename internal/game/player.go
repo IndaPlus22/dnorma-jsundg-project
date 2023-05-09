@@ -1,4 +1,5 @@
 package game
+// Player is the player in the game. It can move around and jump.
 
 import (
 	"dnorma-jsundg-project/internal/input"
@@ -15,15 +16,15 @@ type Player struct {
 	sprite	*pixel.Sprite
 	last	time.Time
 }
-
-func NewPlayer(sprite *pixel.Sprite, pos pixel.Vec) *Player{
+// NewPlayer creates a new player with the given sprite and position.
+func NewPlayer(sprite *pixel.Sprite, pos pixel.Vec) *Player {
 	return &Player{
 		sprite: sprite,
 		pos:	pos,
 		vel:	pixel.V(300, 300),
 	}
 }
-
+//Draw draws the player to the window.
 func (p *Player) Draw(win *pixelgl.Window) {
 	if p.sprite != nil {
 		p.sprite.Draw(win, pixel.IM.Moved(p.pos))
@@ -36,8 +37,8 @@ func (p *Player) Draw(win *pixelgl.Window) {
 	}
 
 }
-
-func (p *Player) Update(input *input.InputState, win *pixelgl.Window){
+// Update updates the player's position and velocity.
+func (p *Player) Update(input *input.InputState, win *pixelgl.Window) {
 	dt := time.Since(p.last).Seconds()
 	p.last = time.Now()
 
@@ -53,8 +54,31 @@ func (p *Player) Update(input *input.InputState, win *pixelgl.Window){
 	if input.Down {
 		p.pos.Y -= p.vel.Y * dt
 	}
-}
 
+	p.pos.X += p.vel.X * dt
+	p.pos.Y += p.vel.Y * dt
+}
+// GetRect returns the player's rectangle.
 func (p *Player) GetRect() pixel.Rect {
-	return pixel.R(p.pos.X, p.pos.Y, p.pos.X + 50, p.pos.Y + 50)
+	return pixel.R(p.pos.X, p.pos.Y, p.pos.X+40, p.pos.Y+30)
+}
+// Jump makes the player jump.
+func (p *Player) Jump() {
+	if p.grounded {
+		p.vel.Y += p.jumpForce
+		p.grounded = false
+	}
+}
+// SpeedBoost increases the player's speed.
+func (p *Player) SpeedBoost(speed float64) {
+	p.velForce += speed
+}
+//JumpBoost increases the player's jump force.
+func (p *Player) JumpBoost(jump float64) {
+	p.jumpForce += jump
+}
+//ResetEffects resets the player's speed and jump force.
+func (p *Player) ResetEffects() {
+	p.velForce = 0
+	p.jumpForce = 1000
 }
