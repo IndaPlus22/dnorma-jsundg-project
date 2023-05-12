@@ -20,8 +20,8 @@ func LoadLevel3() *game.Level {
 		game.NewWall(pixel.V(1100, 0), 60, 600, pixel.RGB(0.9, 0.2, 0.4)),
 	}
 	platforms := []*game.Platform{
-		game.NewPlatform(pixel.V(0, 0), 800, 10, pixel.RGB(0.9, 0.2, 0.4)),
-		game.NewPlatform(pixel.V(1100, 0), 700, 10, pixel.RGB(0.9, 0.2, 0.4)),
+		game.NewPlatform(pixel.V(0, 0), 800, 30, pixel.RGB(0.9, 0.2, 0.4)),
+		game.NewPlatform(pixel.V(1100, 0), 700, 30, pixel.RGB(0.9, 0.2, 0.4)),
 		game.NewPlatform(pixel.V(640, 200), 100, 10, pixel.RGB(0.5, 0.5, 1)),
 		game.NewPlatform(pixel.V(640, 400), 100, 10, pixel.RGB(0.5, 0.5, 1)),
 		game.NewPlatform(pixel.V(1095, 515), 5, 10, pixel.RGB(1, 0.75, 0.8)),

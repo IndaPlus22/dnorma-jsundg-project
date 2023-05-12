@@ -15,7 +15,7 @@ func LoadLevel4() *game.Level {
 		game.NewWall(pixel.V(790, 0), 200, 700, pixel.RGB(0.9, 0.2, 0.4)),
 	}
 	platforms := []*game.Platform{
-		game.NewPlatform(pixel.V(0, 0), 800, 10, pixel.RGB(0.9, 0.2, 0.4)),
+		game.NewPlatform(pixel.V(0, 0), 800, 30, pixel.RGB(0.9, 0.2, 0.4)),
 
 		game.NewPlatform(pixel.V(205, 0), 40, 800, pixel.RGB(0.9, 0.2, 0.4)),
 		game.NewPlatform(pixel.V(250, 0), 40, 800, pixel.RGB(0.9, 0.2, 0.4)),
@@ -24,8 +24,13 @@ func LoadLevel4() *game.Level {
 		game.NewPlatform(pixel.V(385, 0), 40, 800, pixel.RGB(0.9, 0.2, 0.4)),
 		game.NewPlatform(pixel.V(430, 0), 40, 800, pixel.RGB(0.9, 0.2, 0.4)),
 		game.NewPlatform(pixel.V(475, 0), 40, 800, pixel.RGB(0.9, 0.2, 0.4)),
+		game.NewPlatform(pixel.V(520, 0), 40, 800, pixel.RGB(0.9, 0.2, 0.4)),
+		game.NewPlatform(pixel.V(565, 0), 40, 800, pixel.RGB(0.9, 0.2, 0.4)),
+		game.NewPlatform(pixel.V(610, 0), 40, 800, pixel.RGB(0.9, 0.2, 0.4)),
+		game.NewPlatform(pixel.V(655, 0), 40, 800, pixel.RGB(0.9, 0.2, 0.4)),
+		game.NewPlatform(pixel.V(700, 0), 40, 800, pixel.RGB(0.9, 0.2, 0.4)),
+		game.NewPlatform(pixel.V(745, 0), 40, 800, pixel.RGB(0.9, 0.2, 0.4)),
 
-		game.NewPlatform(pixel.V(200, 10), 100, 10, pixel.RGB(0.9, 0.2, 0.4)),
 		game.NewPlatform(pixel.V(690, 250), 100, 10, pixel.RGB(0.9, 0.2, 0.4)),
 		game.NewPlatform(pixel.V(200, 490), 100, 10, pixel.RGB(0.9, 0.2, 0.4)),
 	}
